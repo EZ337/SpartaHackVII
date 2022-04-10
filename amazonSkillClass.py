@@ -38,7 +38,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
 ##################################################################################################################
 
-
+#Template. No longer needed in final
 class FromLaptopIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
@@ -61,8 +61,8 @@ class TemperatureThresholdIntentHandler(AbstractRequestHandler):
         return ask_utils.is_intent_name("TemperatureThresholdIntent")(handler_input)
 
     def handle(self, handler_input):
-        fp,upperBound,lowerBound,data_list = open("Data.txt"), 60.0, 10.0,[]
-        for line in fp:
+        fp,upperBound,lowerBound,data_list = open("Data.txt"), 60.0, 10.0,[] #Slots can be utilized to make maximum, minimum, and mean values.
+        for line in fp: #Optimize so lines in files are globals?
             line = line.split()
             if line: data_list.append(line[3]) 
         cwd = float(data_list[-1])
@@ -148,7 +148,7 @@ class HelloWorldIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "EZ just coded this"
+        speak_output = "Hello! What would you like to know about the data from the Arduino?"
 
         return (
             handler_input.response_builder
@@ -185,7 +185,7 @@ class CancelOrStopIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "Goodbye!"
+        speak_output = "Alright!"
 
         return (
             handler_input.response_builder
@@ -202,7 +202,7 @@ class FallbackIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         logger.info("In FallbackIntentHandler")
-        speech = "Hmm, I'm not sure. You can say Hello or Help. What would you like to do?"
+        speech = "I did not understand. You can ask, what is the temperature, humidity levels, and light levels."
         reprompt = "I didn't catch that. What can I help you with?"
 
         return handler_input.response_builder.speak(speech).ask(reprompt).response
@@ -217,8 +217,8 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
         # type: (HandlerInput) -> Response
 
         # Any cleanup logic goes here.
-
-        return handler_input.response_builder.response
+        speak_output = "Leaving Sparta Snack"
+        return handler_input.response_builder.speak(speak_output).response
 
 
 class IntentReflectorHandler(AbstractRequestHandler):
@@ -269,12 +269,6 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
 # The SkillBuilder object acts as the entry point for your skill, routing all request and response
 # payloads to the handlers above. Make sure any new handlers or interceptors you've
 # defined are included below. The order matters - they're processed top to bottom.
-
-
-
-
-
-
 
 sb = SkillBuilder()
 
